@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     enviroment: test
-  name: deployment_for_test
+  name: deploymentfortest
 #В данном контексте используется реплика для баланзировки нагрузки. В случае отказа работы одного пода, к нему на смену выйдет другой
 spec:
   #Временной лимит на время развертывания
@@ -30,7 +30,7 @@ spec:
         - image: nginx:1.16
           name: nginx
   #Определение лимита по нагрузке
-  resources:
-    limits:
-      memory: "128Mi"
-      cpu: "0.5m"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "0.5m"

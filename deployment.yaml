@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    enviroment: test
+  name: deployment_for_test
+#В данном контексте используется реплика для баланзировки нагрузки. В случае отказа работы одного пода, к нему на смену выйдет другой
+spec:
+  #Временной лимит на время развертывания
+  progressDeadlineSeconds: 10
+  replicas: 4
+  selector:
+    matchLabels:
+      enviroment: test
+  #Время, выделенное на обновление пода, а также определение количества подмен подов
+  minReadySeconds: 5
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    #Определение плавающего механизма обновления
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        enviroment: test
+    #Определение сервера, на котором все работает, а также его контейнера
+    spec:
+      containers:
+        - image: nginx:1.16
+          name: nginx
+  #Определение лимита по нагрузке
+  resources:
+    limits:
+      memory: "128Mi"
+      cpu: "0.5m"
